@@ -61,6 +61,29 @@ public class RunnerRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Runner with ID " + id + " not found");
         }
     }
+
+    @GetMapping("/tallestrunnersname")
+    public String getTallestRunnersName() {
+        List<RunnerEntity> runners = runnerRepository.findAll();
+        if(runners.size() != 0){
+            RunnerEntity previousRunner = null;
+            for(RunnerEntity currentRunner : runners){
+                if(previousRunner != null){
+                    if(currentRunner.getHeight() > previousRunner.getHeight()){
+                        previousRunner = currentRunner;
+                    }
+                }
+                else{
+                    previousRunner = currentRunner;
+                }
+            }
+            return previousRunner.getRunnerName();
+        }
+        else{
+            return "HIBA";
+        }
+    }
+
     public static class LapTimeRequest {
         private int lapTimeSeconds;
 
